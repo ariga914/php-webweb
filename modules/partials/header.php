@@ -1,9 +1,21 @@
+<?php
+// Define an array to contain page titles
+$pageTitles = array(
+    'home' => "Home",
+    "profile" => "My Profile",
+);
+// Get page title depend on what is using module. 
+$pageTitle = $pageTitles[$module];
+?>
+  
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <link rel="stylesheet" href="normalize.css">
         <meta charset="utf-8">
-        <title>My web page</title>
+         <!-- use defined variable to render page title in HTML -->
+        <title><?php echo $pageTitle; ?></title>
         <link rel="stylesheet" href="./assets/css/index.css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
