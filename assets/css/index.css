@@ -209,3 +209,25 @@ footer {
 #scroll i {
     margin-top: 8px;
 }
+
+
+/*register.php */
+
+.form-register {
+    margin: 5px;
+}
+
+.form-register label {
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.form-register input {
+    line-height: 30px;
+    height: 30px;
+    border: #ccc 1px solid;
+    margin: 0px;
+    padding: 0px 5px;
+    width: 300px;
+}

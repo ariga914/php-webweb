@@ -1,20 +1,37 @@
 <?php
-// Define an array to contain page titles
-$pageTitles = array(
-    'home' => "Home",
-    "profile" => "My Profile",
-);
-// Get page title depend on what is using module. 
-$pageTitle = $pageTitles[$module];
-?>
-  
+    // Define an array to contain page titles
+    $pageTitles = array(
+        'home' => "Home",
+        "profile" => "My Profile",
+        "register" => "Regiser"
+    );
+    // Get page title depend on what is using module
+    $pageTitle = $pageTitles[$module];
 
+    // Get session for checking user logged-in or not
+    $userId = $_SESSION['user_login_id'];
+    // Default, user is not logged-in
+    $user = false;
+    if ($userId) {
+        // query user data by $username and $password
+        $sql = "SELECT id, username, email, fullname 
+            FROM users 
+            WHERE id = $userId
+            LIMIT 0,1";
+
+        $result = $mysql->query($sql);
+        $user = $result->fetch_array() ?? false;
+    }
+
+    // Define fullname to show on header
+    $fullname = $user ? $user['fullname'] : 'Guest';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <link rel="stylesheet" href="normalize.css">
         <meta charset="utf-8">
-         <!-- use defined variable to render page title in HTML -->
+        <!-- use defined variable to render page title in HTML -->
         <title><?php echo $pageTitle; ?></title>
         <link rel="stylesheet" href="./assets/css/index.css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -23,7 +40,7 @@ $pageTitle = $pageTitles[$module];
     </head>
     <body>
         <!-- The Header -->
-        <header> 
+        <header>
         <div>
             <h4>The logo</h4>
         </div>
@@ -32,11 +49,11 @@ $pageTitle = $pageTitles[$module];
         </div>
         <div id="form">
             <ul>
-                <li>Hi <span>Guest</span></li>
+                <li>Hi <span><?php echo $fullname; ?></span></li>
                 <li><a href="javascript:void(0)" onclick="showLoginForm()">Login</a></li>
             </ul>
-            
-            <form id="login">
+
+            <form id="login" action="index.php?m=login" method="post">
                 <input type="text" name="username" placeholder="User name" />
                 <input type="password" name="password" placeholder="Password"/>
                 <label><input type="checkbox" name="rememberUsername" />Remember user name </label>
@@ -48,16 +65,12 @@ $pageTitle = $pageTitles[$module];
             </form>
         </div>
         </header>
-        
+
         <!-- The menu -->
         <nav>
             <ul>
-            <nav>
-    <ul>
-        <li><a href="./index.php">Home</a></li>
-        <li><a href="./index.php?m=profile">My Profile</a></li>
-    </ul>
-</nav>
-
+                <li><a href="./index.php">Home</a></li>
+                <li><a href="./index.php?m=register">Register</a></li>
+                <li><a href="./index.php?m=profile">My Profile</a></li>
             </ul>
         </nav>
