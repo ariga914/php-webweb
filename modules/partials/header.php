@@ -6,10 +6,10 @@
         "register" => "Regiser"
     );
     // Get page title depend on what is using module
-    $pageTitle = $pageTitles[$module];
+    $pageTitle = array_key_exists($module, $pageTitles) ? $pageTitles[$module] : null;
 
     // Get session for checking user logged-in or not
-    $userId = $_SESSION['user_login_id'];
+    $userId = array_key_exists('login_user_id', $_SESSION) ? $_SESSION['login_user_id'] : null;
     // Default, user is not logged-in
     $user = false;
     if ($userId) {
@@ -42,7 +42,11 @@
         <!-- The Header -->
         <header>
         <div>
-            <h4>The logo</h4>
+            <?php if(array_key_exists('login_user_id', $_SESSION)): ?>
+                <h4>The logo<?php echo $_SESSION['login_user_id']; ?> </h4>
+            <?php else: ?>
+                <h4>The logo</h4>
+            <?php endif ?>
         </div>
         <div>
                 <h2 class="slogan">The header slogan</h2>

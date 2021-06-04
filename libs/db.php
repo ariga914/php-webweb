@@ -1,5 +1,4 @@
 <?php
-//file db.php
 class DB {
     private $host;
     private $user;
@@ -35,7 +34,7 @@ class DB {
         return $result;
     }
 
-    //Close connection
+    //close connection
     public function __destruct() {
         echo "Close connection";
         if ($this->conn) {
