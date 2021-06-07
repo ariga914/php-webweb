@@ -33,7 +33,6 @@ if (!empty($_POST)) {
         // if there is error, push the error message to array $error
         array_push($errors, $e->getMessage());
     }
-
 }
 ?>
 <!-- MAIN content -->
