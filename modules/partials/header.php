@@ -3,7 +3,8 @@
     $pageTitles = array(
         'home' => "Home",
         "profile" => "My Profile",
-        "register" => "Regiser"
+        "register" => "Regiser",
+        "change_password" => "Change Password"
     );
     // Get page title depend on what is using module
     $pageTitle = array_key_exists($module, $pageTitles) ? $pageTitles[$module] : null;
@@ -54,7 +55,11 @@
         <div id="form">
             <ul>
                 <li>Hi <span><?php echo $fullname; ?></span></li>
-                <li><a href="javascript:void(0)" onclick="showLoginForm()">Login</a></li>
+                <?php if(!$userId): ?>
+                    <li><a href="javascript:void(0)" onclick="showLoginForm()">Login</a></li>
+                <?php else:?>
+                    <li><a href="./index.php?m=logout">Logout</a></li>
+                <?php endif ?>            
             </ul>
 
             <form id="login" action="index.php?m=login" method="post">
@@ -74,7 +79,14 @@
         <nav>
             <ul>
                 <li><a href="./index.php">Home</a></li>
-                <li><a href="./index.php?m=register">Register</a></li>
-                <li><a href="./index.php?m=profile">My Profile</a></li>
+                <?php if (!$userId): ?>
+                    <li><a href="./index.php?m=register">Register</a></li>
+                <?php endif ?>
+                <?php if ($userId): ?>
+                    <li><a href="./index.php?m=profile">My Profile</a></li>
+                <?php endif ?>
+                <?php if ($userId): ?>
+                    <li><a href="./index.php?m=change_password">Change Password</a></li>
+                <?php endif ?>
             </ul>
         </nav>

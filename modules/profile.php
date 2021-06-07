@@ -1,3 +1,9 @@
+<?php
+if (!$_SESSION["login_user_id"]) {
+    header('Location:index.php');
+}
+?>
+
 <!-- MAIN content -->
 <div id="main">
     <div id="main-content">

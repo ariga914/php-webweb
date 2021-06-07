@@ -1,4 +1,10 @@
 <?php
+//redirect to home if not login
+$session = isset($_SESSION["login_user_id"]) ? $_SESSION["login_user_id"] : null;
+if ($session) {
+    header('Location:index.php');
+}
+
 // Define variable to check if user is not registered, show register form
 $isSuccess = isset($_GET['success']) ? $_GET['success']: null;
 
