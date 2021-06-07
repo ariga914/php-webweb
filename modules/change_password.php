@@ -16,13 +16,14 @@ if (!empty($_POST)) {
     $user = $result->fetch_array() ?? false;
 
     if ($update === $confirm && $current === $user['password']) {
-        $update_password ="UPDATE users SET password = '$update' WHERE id = $userId";
+        $update_password = "UPDATE users SET password = '$update' WHERE id = $userId";
         $result2 = $mysql->query($update_password) ?? false;
-            if (!$result2) {
-                echo "<p>"."failed to update your password".$mysql->error."</p>";
-            } else {
-                header('Location: index.php?m=change_password&success=true');
-            }
+        if ($result2) {
+            header('Location: index.php?m=change_password&success=true');
+        } 
+    }
+    else {
+            echo "<p>"."failed to update your password"."</p>";
     }
 }
 
@@ -33,14 +34,6 @@ if (!empty($_POST)) {
 <div id="main">
     <div id="main-content">
         <h3>Update password</h3>
-        <?php
-        // Check if there is any error, ouput the error to screen.
-        if (isset($errors) && !empty($errors)) {
-            foreach ($errors as $error) {
-                echo '<p>'. $error . '</p>';
-            }
-        }
-        ?>
         <?php
         // Check if user not registered, show form
         if (!$isSuccess) { ?>
