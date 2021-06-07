@@ -23,7 +23,7 @@ if (!empty($_POST)) {
         } 
     }
     else {
-            echo "<p>"."failed to update your password"."</p>";
+            echo "<p>"."sorry, failed to update your password"."</p>";
     }
 }
 
