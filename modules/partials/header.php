@@ -81,11 +81,8 @@
                 <li><a href="./index.php">Home</a></li>
                 <?php if (!$userId): ?>
                     <li><a href="./index.php?m=register">Register</a></li>
-                <?php endif ?>
-                <?php if ($userId): ?>
-                    <li><a href="./index.php?m=profile">My Profile</a></li>
-                <?php endif ?>
-                <?php if ($userId): ?>
+                <?php else: ?>                
+                    <li><a href="./index.php?m=profile">My Profile</a></li>                    
                     <li><a href="./index.php?m=change_password">Change Password</a></li>
                 <?php endif ?>
             </ul>

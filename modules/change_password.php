@@ -2,6 +2,7 @@
 $userId = isset($_SESSION['login_user_id']) ? $_SESSION['login_user_id'] : null;
 if (!$userId) {
     header('Location:index.php');
+    exit();
 }
 
 $isSuccess = isset($_GET['success']) ? $_GET['success']: null;
@@ -17,17 +18,16 @@ if (!empty($_POST)) {
 
     $update_password = "UPDATE users SET password = '$update' WHERE id = $userId";
     $errors = [];
-    if ($update === $confirm && $current === $user['password']) {
-        try{
+    
+    try{
+        if ($update === $confirm && $current === $user['password']) {
             $result2 = $mysql->query($update_password) ?? false;
             header('Location: index.php?m=change_password&success=true');
-            exit;
-        } catch (Exception $e) {
-            array_push($errors, $e->getMessage());
-        }
-    } else {
-            echo "<p>"."Failed to update your password. Current password is incorrect or input in New password doesn't correspond to the one in Confirming new password"."</p>";
-    }
+            exit();
+        }        
+    } catch (Exception $e) {
+        array_push($errors, $e->getMessage());
+    }     
 }
 
 
@@ -45,7 +45,11 @@ if (!empty($_POST)) {
             }
         }
         // Check if user not registered, show form
-        if (!$isSuccess) { ?>
+        if (!$isSuccess) { 
+            if (!empty($_POST)) {
+                echo "<p>"."OMG, failed to update password"."</p>";
+            }    
+        ?>
             <form method="post" class="form-register">
                 <p>
                     <label>Current password: </label>
