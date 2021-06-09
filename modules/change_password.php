@@ -16,25 +16,24 @@ if (!empty($_POST)) {
     $result = $mysql->query($search_current_password);
     $user = $result->fetch_array() ?? false;
 
-    $update_password = "UPDATE users SET password = '$update' WHERE id = $userId";
+    
     $errors = [];
     
-    if ($update === $confirm) {
-        if ($current === $user['password']) {
-            try{       
-                    $result2 = $mysql->query($update_password) ?? false;
-                    header('Location: index.php?m=change_password&success=true');
-                    exit();        
-            } catch (Exception $e) {
-                array_push($errors, $e->getMessage());
-            }  
-        } else {
-            header('Location: index.php?m=change_password&error=type1');
-            exit();
+    if ($current !== $user['password']) {
+        array_push($errors, "Current password is incorrect");
+    }
+    if ($update !== $confirm) {
+        array_push($errors, "Confirm password is not matched with New Password");
+    }
+    if (empty($errors)){
+        try{       
+        $update_password = "UPDATE users SET password = '$update' WHERE id = $userId";    
+        $result2 = $mysql->query($update_password) ?? false;
+        header('Location: index.php?m=change_password&success=true');
+        exit();        
+        } catch (Exception $e) {
+            array_push($errors, $e->getMessage());
         }  
-    } else {
-        header('Location: index.php?m=change_password&error=type2');
-        exit();
     }
 }
 
@@ -53,13 +52,7 @@ if (!empty($_POST)) {
             }
         }
         // Check if user not registered, show form
-        $errorType = isset($_GET['error']) ? $_GET['error'] : null;
         if (!$isSuccess) { 
-            if (empty($_POST) && $errorType === "type1") {
-                echo "<p>"."Failed to update password. The input in Current password doesn't correspond to your current password."."</p>";
-            } elseif (empty($_POST) && $errorType === "type2") {
-                echo "<p>"."Failed to update password. The input in New password doesn't correspond to the one in Confirming new password"."</p>";
-            }
         ?>
             <form method="post" class="form-register">
                 <p>
