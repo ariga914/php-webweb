@@ -19,15 +19,23 @@ if (!empty($_POST)) {
     $update_password = "UPDATE users SET password = '$update' WHERE id = $userId";
     $errors = [];
     
-    try{
-        if ($update === $confirm && $current === $user['password']) {
-            $result2 = $mysql->query($update_password) ?? false;
-            header('Location: index.php?m=change_password&success=true');
+    if ($update === $confirm) {
+        if ($current === $user['password']) {
+            try{       
+                    $result2 = $mysql->query($update_password) ?? false;
+                    header('Location: index.php?m=change_password&success=true');
+                    exit();        
+            } catch (Exception $e) {
+                array_push($errors, $e->getMessage());
+            }  
+        } else {
+            header('Location: index.php?m=change_password&error=type1');
             exit();
-        }        
-    } catch (Exception $e) {
-        array_push($errors, $e->getMessage());
-    }     
+        }  
+    } else {
+        header('Location: index.php?m=change_password&error=type2');
+        exit();
+    }
 }
 
 
@@ -45,10 +53,13 @@ if (!empty($_POST)) {
             }
         }
         // Check if user not registered, show form
+        $errorType = isset($_GET['error']) ? $_GET['error'] : null;
         if (!$isSuccess) { 
-            if (!empty($_POST)) {
-                echo "<p>"."OMG, failed to update password"."</p>";
-            }    
+            if (empty($_POST) && $errorType === "type1") {
+                echo "<p>"."Failed to update password. The input in Current password doesn't correspond to your current password."."</p>";
+            } elseif (empty($_POST) && $errorType === "type2") {
+                echo "<p>"."Failed to update password. The input in New password doesn't correspond to the one in Confirming new password"."</p>";
+            }
         ?>
             <form method="post" class="form-register">
                 <p>
